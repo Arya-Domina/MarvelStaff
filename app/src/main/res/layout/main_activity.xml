@@ -4,4 +4,13 @@
     android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity" />
+    tools:context=".MainActivity" >
+
+    <TextView
+        android:id="@+id/marvel_attribute"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="http://marvel.com"
+        android:text="Data provided by Marvel. © 2020 Marvel"
+        android:layout_gravity="bottom"/>
+</FrameLayout>
