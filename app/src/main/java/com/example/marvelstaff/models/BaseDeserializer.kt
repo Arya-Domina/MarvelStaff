@@ -23,7 +23,11 @@ interface BaseDeserializer {
 
     fun JsonElement.getString(memberName: String): String? {
         return try {
-            this.asJsonObject.get(memberName).asString
+            this.asJsonObject.get(memberName).asString.let {
+                if (it.isNullOrEmpty() || it == " ")
+                    null
+                else it
+            }
         } catch (th: Throwable) {
             null
         }

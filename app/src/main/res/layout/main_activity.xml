@@ -1,16 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity" >
+    tools:context=".MainActivity">
+
+    <FrameLayout
+        android:id="@+id/container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="@dimen/attribute_size_plus"/>
 
     <TextView
         android:id="@+id/marvel_attribute"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:hint="http://marvel.com"
-        android:text="Data provided by Marvel. © 2020 Marvel"
-        android:layout_gravity="bottom"/>
+        android:layout_gravity="center|bottom"
+        android:textSize="@dimen/attribute_size"
+        android:hint="@string/marvel_link"
+        android:text="@string/marvel_attribute" />
 </FrameLayout>

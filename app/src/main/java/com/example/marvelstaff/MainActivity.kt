@@ -2,7 +2,7 @@ package com.example.marvelstaff
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import com.example.marvelstaff.ui.main.MainFragment
+import com.example.marvelstaff.ui.main.CharListFragment
 
 class MainActivity : AppCompatActivity() {
 
@@ -11,7 +11,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.main_activity)
         if (savedInstanceState == null) {
             supportFragmentManager.beginTransaction()
-                .replace(R.id.container, MainFragment.newInstance())
+                .replace(R.id.container, CharListFragment.newInstance())
                 .commitNow()
         }
     }

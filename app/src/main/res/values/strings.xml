@@ -1,3 +1,13 @@
 <resources>
     <string name="app_name">Marvel Staff</string>
+
+    <string name="denotation">Denotation</string>
+    <string name="value_text">Value</string>
+    <string name="char_name">Name</string>
+    <string name="description">Description</string>
+    <string name="comic_title">Title</string>
+
+    <string name="search_hint">Enter name of the character</string>
+    <string name="marvel_link">http://marvel.com</string>
+    <string name="marvel_attribute">Data provided by Marvel. © 2020 Marvel</string>
 </resources>
