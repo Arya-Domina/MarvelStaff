@@ -14,11 +14,12 @@
         android:layout_height="wrap_content">
 
         <ImageView
-            android:id="@+id/image"
+            android:id="@+id/thumbnail"
             android:layout_width="@dimen/small_image_size"
             android:layout_height="@dimen/small_image_size"
             android:layout_gravity="center"
             android:layout_margin="8dp"
+            android:src="@drawable/ic_placeholder"
             android:background="@color/icon_background" />
 
         <LinearLayout

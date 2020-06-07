@@ -24,6 +24,8 @@ class CharactersListDeserializer : JsonDeserializer<CharactersList>, BaseDeseria
                         it.getJsonObject("events")?.getInt("available"),
                         it.getJsonObject("series")?.getInt("available"),
                         it.getJsonObject("thumbnail")?.getString("path")
+                                + "."
+                                + it.getJsonObject("thumbnail")?.getString("extension")
                     )
                 )
             }

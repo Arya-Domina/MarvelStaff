@@ -43,7 +43,7 @@ class PairTextView @JvmOverloads constructor(
     var value: String? = value_text.text.toString()
         set(value) {
             field = value
-            value?.let { value_text.text = it }
+            value_text.text = value
         }
 
 }
