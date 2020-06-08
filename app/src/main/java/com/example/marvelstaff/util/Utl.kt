@@ -11,7 +11,4 @@ fun String.addSizeMedium(): String {
 fun String.addSize(size: String): String {
     return (substringBeforeLast('.') +
             replaceBeforeLast('.', size))
-        .also {
-            Logger.log("Util", "addSize: $it")
-        }
 }

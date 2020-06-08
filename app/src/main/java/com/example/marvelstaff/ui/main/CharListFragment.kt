@@ -35,19 +35,18 @@ class CharListFragment : Fragment() {
         recycler_container.layoutManager = LinearLayoutManager(this.context)
         recycler_container.adapter = CharListAdapter()
 
-        button_one.setOnClickListener {
-            viewModel.requestComics(1009157) // test
-        }
-        button_list.setOnClickListener {
-            viewModel.requestCharacters(search_edit_text.text.toString())
-        }
         viewModel.charactersList.observe(viewLifecycleOwner, Observer {
+            Logger.log("CharListFragment", "charactersList observe ${it.list.size}")
             (recycler_container.adapter as CharListAdapter).listChar = it
             (recycler_container.adapter as CharListAdapter).notifyDataSetChanged()
         })
         viewModel.comicsList.observe(viewLifecycleOwner, Observer {
             Logger.log("CharListFragment", "comicsList")
         })
+    }
+
+    fun searchCharacters(query: String) {
+        viewModel.requestCharacters(query)
     }
 
 }
