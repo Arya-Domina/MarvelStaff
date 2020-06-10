@@ -24,9 +24,9 @@ class MainViewModel(
     fun requestCharacter(characterId: Int) {
         val disposable = repository.getCharacter(characterId)
             .subscribe({
-                Logger.log("MainActivity", "one success, $it")
+                Logger.log("MainViewModel", "one success, $it")
             }, {
-                Logger.log("MainActivity", "one err", it)
+                Logger.log("MainViewModel", "one err", it)
             })
         compositeDisposable.addAll(disposable)
     }
@@ -34,10 +34,10 @@ class MainViewModel(
     fun requestCharacters(name: String) {
         val disposable = repository.getCharacters(name)
             .subscribe({
-                Logger.log("MainActivity", "list success, $it")
+                Logger.log("MainViewModel", "list success, $it")
                 charactersList.value = it
             }, {
-                Logger.log("MainActivity", "list err", it)
+                Logger.log("MainViewModel", "list err", it)
             })
         compositeDisposable.addAll(disposable)
     }
@@ -45,8 +45,10 @@ class MainViewModel(
     fun requestComics(characterId: Int) {
         val disposable = repository.getComics(characterId)
             .subscribe({
+                Logger.log("MainViewModel", "comics success, $it")
                 comicsList.value = it
             }, {
+                Logger.log("MainViewModel", "comics err, $it")
             })
         compositeDisposable.addAll(disposable)
     }
