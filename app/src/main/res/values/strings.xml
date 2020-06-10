@@ -5,7 +5,14 @@
     <string name="value_text">Value</string>
     <string name="char_name">Name</string>
     <string name="description">Description</string>
+    <string name="comics">Comics</string>
+    <string name="series">Series</string>
+    <string name="stories">Stories</string>
+    <string name="events">Events</string>
     <string name="comic_title">Title</string>
+    <string name="format">Format</string>
+    <string name="pages">Pages</string>
+    <string name="series_name">Series</string>
 
     <string name="search_menu">Search</string>
     <string name="search_hint">Search characters</string>

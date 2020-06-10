@@ -21,7 +21,7 @@ class CharListHolder(private val itemCharView: View) : RecyclerView.ViewHolder(i
 
         itemCharView.setOnClickListener(
             Navigation.createNavigateOnClickListener(
-                CharListFragmentDirections.actionCharListFragmentToCharDetailsFragment()
+                CharListFragmentDirections.actionCharListFragmentToCharDetailsFragment(char)
             )
         )
     }

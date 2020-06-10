@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.marvelstaff.MainViewModel
 import com.example.marvelstaff.R
 import com.example.marvelstaff.util.Logger
 import kotlinx.android.synthetic.main.main_fragment.*
@@ -35,9 +36,6 @@ class CharListFragment : Fragment() {
             Logger.log("CharListFragment", "charactersList observe ${it.list.size}")
             (recycler_container.adapter as CharListAdapter).listChar = it
             (recycler_container.adapter as CharListAdapter).notifyDataSetChanged()
-        })
-        viewModel.comicsList.observe(viewLifecycleOwner, Observer {
-            Logger.log("CharListFragment", "comicsList")
         })
 
         val q = CharListFragmentArgs.fromBundle(requireArguments()).query

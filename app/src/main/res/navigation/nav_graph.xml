@@ -28,5 +28,9 @@
     <fragment
         android:id="@+id/charDetailsFragment"
         android:name="com.example.marvelstaff.ui.details.CharDetailsFragment"
-        android:label="CharDetailsFragment" />
+        android:label="CharDetailsFragment">
+        <argument
+            android:name="char"
+            app:argType="com.example.marvelstaff.models.Character" />
+    </fragment>
 </navigation>

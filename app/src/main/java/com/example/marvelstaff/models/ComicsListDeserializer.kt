@@ -24,6 +24,8 @@ class ComicsListDeserializer : JsonDeserializer<ComicsList>, BaseDeserializer {
                         it.getJsonObject("series")?.getString("name"),
                         it.getJsonObject("series")?.getString("resourceURI"),
                         it.getJsonObject("thumbnail")?.getString("path")
+                                + "."
+                                + it.getJsonObject("thumbnail")?.getString("extension")
                     )
                 )
             }

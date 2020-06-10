@@ -12,8 +12,8 @@ class PairTextView @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0, defStyleRes: Int = 0
 ) : LinearLayout(context, attrs, defStyleAttr, defStyleRes) {
 
-    constructor(context: Context, @StringRes denotationRes: Int?, value: String?) : this(context) {
-        denotationRes?.let { denotation_text.setText(denotationRes) }
+    constructor(context: Context, @StringRes denotationRes: Int, value: String?) : this(context) {
+        denotation_text.setText(denotationRes)
         if (value != null)
             value_text.text = value
         else value_text.hint =
