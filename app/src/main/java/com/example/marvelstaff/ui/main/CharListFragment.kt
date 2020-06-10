@@ -14,10 +14,6 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class CharListFragment : Fragment() {
 
-    companion object {
-        fun newInstance() = CharListFragment()
-    }
-
     private val viewModel: MainViewModel by viewModel()
 
     override fun onCreateView(
@@ -43,10 +39,12 @@ class CharListFragment : Fragment() {
         viewModel.comicsList.observe(viewLifecycleOwner, Observer {
             Logger.log("CharListFragment", "comicsList")
         })
-    }
 
-    fun searchCharacters(query: String) {
-        viewModel.requestCharacters(query)
+        val q = CharListFragmentArgs.fromBundle(requireArguments()).query
+        Logger.log("CharListFragment", "onActivityCreated args: $q")
+        if (q != "null") {
+            viewModel.requestCharacters(q)
+        }
     }
 
 }

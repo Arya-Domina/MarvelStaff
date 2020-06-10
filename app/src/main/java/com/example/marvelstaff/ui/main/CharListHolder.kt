@@ -1,6 +1,7 @@
 package com.example.marvelstaff.ui.main
 
 import android.view.View
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
 import com.example.marvelstaff.R
 import com.example.marvelstaff.models.Character
@@ -17,5 +18,11 @@ class CharListHolder(private val itemCharView: View) : RecyclerView.ViewHolder(i
 
         itemCharView.fields_list.pair_name.value = char.name ?: "no name"
         itemCharView.fields_list.pair_des.value = char.description?.take(40)?.plus("...")
+
+        itemCharView.setOnClickListener(
+            Navigation.createNavigateOnClickListener(
+                CharListFragmentDirections.actionCharListFragmentToCharDetailsFragment()
+            )
+        )
     }
 }

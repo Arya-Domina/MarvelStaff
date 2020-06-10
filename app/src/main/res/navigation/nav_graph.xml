@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/charListFragment">
+
+    <fragment
+        android:id="@+id/charListFragment"
+        android:name="com.example.marvelstaff.ui.main.CharListFragment"
+        android:label="main_fragment"
+        tools:layout="@layout/main_fragment">
+        <action
+            android:id="@+id/action_charListFragment_to_charDetailsFragment"
+            app:destination="@id/charDetailsFragment" />
+        <action
+            android:id="@+id/action_charListFragment_self"
+            app:destination="@id/charListFragment">
+            <argument
+                android:name="query"
+                android:defaultValue="null" />
+        </action>
+        <argument
+            android:name="query"
+            android:defaultValue='null'
+            app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/charDetailsFragment"
+        android:name="com.example.marvelstaff.ui.details.CharDetailsFragment"
+        android:label="CharDetailsFragment" />
+</navigation>
