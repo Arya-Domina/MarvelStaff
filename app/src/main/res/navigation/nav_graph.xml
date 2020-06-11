@@ -5,6 +5,11 @@
     android:id="@+id/nav_graph"
     app:startDestination="@id/charListFragment">
 
+    <action
+        android:id="@+id/action_global_charListFragment"
+        app:destination="@id/charListFragment"
+        app:popUpTo="@id/charListFragment"
+        app:popUpToInclusive="true" />
     <fragment
         android:id="@+id/charListFragment"
         android:name="com.example.marvelstaff.ui.main.CharListFragment"
@@ -13,13 +18,6 @@
         <action
             android:id="@+id/action_charListFragment_to_charDetailsFragment"
             app:destination="@id/charDetailsFragment" />
-        <action
-            android:id="@+id/action_charListFragment_self"
-            app:destination="@id/charListFragment">
-            <argument
-                android:name="query"
-                android:defaultValue="null" />
-        </action>
         <argument
             android:name="query"
             android:defaultValue='null'

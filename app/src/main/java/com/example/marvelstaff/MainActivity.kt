@@ -10,7 +10,6 @@ import android.view.SearchEvent
 import android.widget.SearchView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.Navigation
-import com.example.marvelstaff.ui.main.CharListFragmentDirections
 import com.example.marvelstaff.util.Logger
 
 class MainActivity : AppCompatActivity() {
@@ -31,7 +30,7 @@ class MainActivity : AppCompatActivity() {
                 .saveRecentQuery(query, null)
             Logger.log("MainActivity", "onNewIntent, query: $query")
             Navigation.findNavController(this, R.id.nav_host_fragment).navigate(
-                CharListFragmentDirections.actionCharListFragmentSelf(query)
+                NavGraphDirections.actionGlobalCharListFragment(query)
             )
         }
         super.onNewIntent(intent)
