@@ -61,6 +61,11 @@ class CharDetailsFragment : Fragment() {
             viewModel.requestComics(char.id)
         else
             viewModel.clearComics()
+        viewModel.errorState.observe(viewLifecycleOwner, Observer {
+            Logger.log("CharListFragment", "errorState: $it")
+            text_error_state.visibility = if (it) View.VISIBLE else View.GONE
+            recycler_container.visibility = if (!it) View.VISIBLE else View.GONE
+        })
     }
 
     private fun LinearLayout.addPair(@StringRes denotationRes: Int, value: String?) {

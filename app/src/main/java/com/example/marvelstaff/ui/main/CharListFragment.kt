@@ -37,6 +37,10 @@ class CharListFragment : Fragment() {
             (recycler_container.adapter as CharListAdapter).listChar = it
             (recycler_container.adapter as CharListAdapter).notifyDataSetChanged()
         })
+        viewModel.errorState.observe(viewLifecycleOwner, Observer {
+            Logger.log("CharListFragment", "errorState: $it")
+            text_error_state.visibility = if (it) View.VISIBLE else View.GONE
+        })
 
         val q = CharListFragmentArgs.fromBundle(requireArguments()).query
         Logger.log("CharListFragment", "onActivityCreated args: $q")

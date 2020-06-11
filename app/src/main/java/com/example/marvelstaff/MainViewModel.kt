@@ -14,6 +14,7 @@ class MainViewModel(
 
     val charactersList = MutableLiveData<CharactersList>(CharactersList())
     val comicsList = MutableLiveData<ComicsList>(ComicsList())
+    val errorState = MutableLiveData<Boolean>(false)
     private val compositeDisposable: CompositeDisposable by lazy { CompositeDisposable() }
 
     override fun onCleared() {
@@ -35,9 +36,11 @@ class MainViewModel(
         val disposable = repository.getCharacters(name)
             .subscribe({
                 Logger.log("MainViewModel", "list success, $it")
+                errorState.value = false
                 charactersList.value = it
             }, {
                 Logger.log("MainViewModel", "list err", it)
+                errorState.value = true
             })
         compositeDisposable.addAll(disposable)
     }
@@ -46,9 +49,11 @@ class MainViewModel(
         val disposable = repository.getComics(characterId)
             .subscribe({
                 Logger.log("MainViewModel", "comics success, $it")
+                errorState.value = false
                 comicsList.value = it
             }, {
                 Logger.log("MainViewModel", "comics err, $it")
+                errorState.value = true
             })
         compositeDisposable.addAll(disposable)
     }
