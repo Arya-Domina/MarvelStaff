@@ -1,22 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <FrameLayout
-        android:id="@+id/container"
+    <fragment
+        android:id="@+id/nav_host_fragment"
+        android:name="androidx.navigation.fragment.NavHostFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginBottom="@dimen/attribute_size_plus"/>
+        android:layout_marginBottom="@dimen/attribute_size_plus"
+        app:defaultNavHost="true"
+        app:navGraph="@navigation/nav_graph" />
 
     <TextView
         android:id="@+id/marvel_attribute"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center|bottom"
-        android:textSize="@dimen/attribute_size"
         android:hint="@string/marvel_link"
-        android:text="@string/marvel_attribute" />
+        android:text="@string/marvel_attribute"
+        android:textSize="@dimen/attribute_size" />
 </FrameLayout>

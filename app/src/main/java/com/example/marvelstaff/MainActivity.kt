@@ -9,7 +9,7 @@ import android.view.Menu
 import android.view.SearchEvent
 import android.widget.SearchView
 import androidx.appcompat.app.AppCompatActivity
-import com.example.marvelstaff.ui.main.CharListFragment
+import androidx.navigation.Navigation
 import com.example.marvelstaff.util.Logger
 
 class MainActivity : AppCompatActivity() {
@@ -17,11 +17,6 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.main_activity)
-        if (savedInstanceState == null) {
-            supportFragmentManager.beginTransaction()
-                .replace(R.id.container, CharListFragment.newInstance())
-                .commitNow()
-        }
     }
 
     override fun onNewIntent(intent: Intent?) {
@@ -34,8 +29,9 @@ class MainActivity : AppCompatActivity() {
             )
                 .saveRecentQuery(query, null)
             Logger.log("MainActivity", "onNewIntent, query: $query")
-            (supportFragmentManager.findFragmentById(R.id.container) as CharListFragment)
-                .searchCharacters(query)
+            Navigation.findNavController(this, R.id.nav_host_fragment).navigate(
+                NavGraphDirections.actionGlobalCharListFragment(query)
+            )
         }
         super.onNewIntent(intent)
     }

@@ -1,4 +1,4 @@
-package com.example.marvelstaff.ui.main
+package com.example.marvelstaff
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -51,5 +51,9 @@ class MainViewModel(
                 Logger.log("MainViewModel", "comics err, $it")
             })
         compositeDisposable.addAll(disposable)
+    }
+
+    fun clearComics() {
+        comicsList.value = ComicsList()
     }
 }
