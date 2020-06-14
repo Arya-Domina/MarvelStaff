@@ -9,8 +9,8 @@ import org.koin.core.inject
 class CharacterRepository : KoinComponent {
     private val networkRepository: NetworkRepository by inject()
 
-    fun getCharacter(characterId: Int): Single<CharactersList> {
-        return networkRepository.getCharacter(characterId)
+    fun getCharacters(name: String, offset: Int, limit: Int): Single<CharactersList> {
+        return networkRepository.getCharacters(name, offset, limit)
     }
 
     fun getCharacters(name: String): Single<CharactersList> {

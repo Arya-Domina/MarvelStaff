@@ -1,10 +1,18 @@
 package com.example.marvelstaff
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
+import androidx.paging.LivePagedListBuilder
+import androidx.paging.PagedList
+import com.example.marvelstaff.models.Character
 import com.example.marvelstaff.models.CharactersList
 import com.example.marvelstaff.models.ComicsList
+import com.example.marvelstaff.models.State
 import com.example.marvelstaff.repository.CharacterRepository
+import com.example.marvelstaff.ui.main.CharDataSource
+import com.example.marvelstaff.ui.main.CharDataSourceFactory
 import com.example.marvelstaff.util.Logger
 import io.reactivex.disposables.CompositeDisposable
 
@@ -17,19 +25,35 @@ class MainViewModel(
     val errorState = MutableLiveData<Boolean>(false)
     private val compositeDisposable: CompositeDisposable by lazy { CompositeDisposable() }
 
+    private val pageSize = 5
+    private val charDataSourceFactory = CharDataSourceFactory()
+    val charList: LiveData<PagedList<Character>> by lazy {
+        val config = PagedList.Config.Builder()
+            .setPageSize(pageSize)
+            .setInitialLoadSizeHint(pageSize * 2)
+            .setEnablePlaceholders(false)
+            .build()
+        LivePagedListBuilder<Int, Character>(charDataSourceFactory, config).build()
+    }
+
+    fun getState(): LiveData<State> =
+        Transformations.switchMap<CharDataSource, State>(
+            charDataSourceFactory.charDataSourceLiveData, CharDataSource::state
+        )
+
+    fun listIsEmpty(): Boolean {
+        return charList.value?.isEmpty() ?: true
+    }
+
+    fun fetch(query: String) {
+        if (charDataSourceFactory.query != query) {
+            charDataSourceFactory.updateQuery(query)
+        }
+    }
+
     override fun onCleared() {
         compositeDisposable.dispose()
         super.onCleared()
-    }
-
-    fun requestCharacter(characterId: Int) {
-        val disposable = repository.getCharacter(characterId)
-            .subscribe({
-                Logger.log("MainViewModel", "one success, $it")
-            }, {
-                Logger.log("MainViewModel", "one err", it)
-            })
-        compositeDisposable.addAll(disposable)
     }
 
     fun requestCharacters(name: String) {

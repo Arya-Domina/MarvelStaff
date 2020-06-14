@@ -7,16 +7,30 @@ import android.os.Bundle
 import android.provider.SearchRecentSuggestions
 import android.view.Menu
 import android.view.SearchEvent
+import android.view.View
 import android.widget.SearchView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
 import androidx.navigation.Navigation
+import com.example.marvelstaff.models.State
 import com.example.marvelstaff.util.Logger
+import kotlinx.android.synthetic.main.main_activity.*
+import kotlinx.android.synthetic.main.main_fragment.*
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : AppCompatActivity() {
+
+    private val viewModel: MainViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.main_activity)
+
+        viewModel.getState().observe(this, Observer { state ->
+            Logger.log("MainActivity", "State observe: it: $state")
+            progress_bar.visibility = if (state == State.LOADING) View.VISIBLE else View.INVISIBLE
+            text_error_state.visibility = if (state == State.ERROR) View.VISIBLE else View.INVISIBLE
+        })
     }
 
     override fun onNewIntent(intent: Intent?) {
@@ -29,9 +43,13 @@ class MainActivity : AppCompatActivity() {
             )
                 .saveRecentQuery(query, null)
             Logger.log("MainActivity", "onNewIntent, query: $query")
-            Navigation.findNavController(this, R.id.nav_host_fragment).navigate(
-                NavGraphDirections.actionGlobalCharListFragment(query)
-            )
+            viewModel.fetch(query)
+            Navigation.findNavController(this, R.id.nav_host_fragment).let {
+                if (it.currentDestination?.id != R.id.charListFragment) {
+                    Logger.log("MainActivity", "no charListFragment")
+                    it.navigate(NavGraphDirections.actionGlobalCharListFragment(query))
+                }
+            }
         }
         super.onNewIntent(intent)
     }

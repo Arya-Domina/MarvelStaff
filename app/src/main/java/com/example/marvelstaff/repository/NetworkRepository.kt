@@ -12,10 +12,8 @@ import org.koin.core.inject
 class NetworkRepository : KoinComponent {
     private val apiService: ApiService by inject()
 
-    fun getCharacter(characterId: Int): Single<CharactersList> {
-        return apiService.getCharacter(characterId)
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
+    fun getCharacters(name: String, offset: Int, limit: Int): Single<CharactersList> {
+        return apiService.getCharacters(name, offset, limit)
     }
 
     fun getCharacters(name: String): Single<CharactersList> {

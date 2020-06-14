@@ -11,11 +11,11 @@ import com.example.marvelstaff.MainViewModel
 import com.example.marvelstaff.R
 import com.example.marvelstaff.util.Logger
 import kotlinx.android.synthetic.main.main_fragment.*
-import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 class CharListFragment : Fragment() {
 
-    private val viewModel: MainViewModel by viewModel()
+    private val viewModel: MainViewModel by sharedViewModel()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -25,28 +25,20 @@ class CharListFragment : Fragment() {
         return inflater.inflate(R.layout.main_fragment, container, false)
     }
 
+    private val adapter: CharPagedAdapter by lazy {
+        CharPagedAdapter()
+    }
+
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         Logger.log("CharListFragment", "onActivityCreated")
 
         recycler_container.layoutManager = LinearLayoutManager(this.context)
-        recycler_container.adapter = CharListAdapter()
+        recycler_container.adapter = adapter
 
-        viewModel.charactersList.observe(viewLifecycleOwner, Observer {
-            Logger.log("CharListFragment", "charactersList observe ${it.list.size}")
-            (recycler_container.adapter as CharListAdapter).listChar = it
-            (recycler_container.adapter as CharListAdapter).notifyDataSetChanged()
+        viewModel.charList.observe(viewLifecycleOwner, Observer {
+            adapter.submitList(it)
         })
-        viewModel.errorState.observe(viewLifecycleOwner, Observer {
-            Logger.log("CharListFragment", "errorState: $it")
-            text_error_state.visibility = if (it) View.VISIBLE else View.GONE
-        })
-
-        val q = CharListFragmentArgs.fromBundle(requireArguments()).query
-        Logger.log("CharListFragment", "onActivityCreated args: $q")
-        if (q != "null") {
-            viewModel.requestCharacters(q)
-        }
     }
 
 }
