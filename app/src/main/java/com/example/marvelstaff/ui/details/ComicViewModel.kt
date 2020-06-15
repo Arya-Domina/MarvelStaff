@@ -1,21 +1,21 @@
-package com.example.marvelstaff
+package com.example.marvelstaff.ui.details
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
-import com.example.marvelstaff.repository.CharRepository
+import com.example.marvelstaff.repository.ComicRepository
 import io.reactivex.disposables.CompositeDisposable
 
-class MainViewModel(
-    private val charRepository: CharRepository
+class ComicViewModel(
+    private val comicRepository: ComicRepository
 ) : ViewModel() {
 
     private val compositeDisposable: CompositeDisposable by lazy { CompositeDisposable() }
-    private val pageSize = 10
+    private val pageSize = 5
 
-    val name = MutableLiveData<String>()
-    val repoResult = Transformations.map(name) {
-        charRepository.getResponse(it, pageSize)
+    val ownerId = MutableLiveData<String>()
+    val repoResult = Transformations.map(ownerId) {
+        comicRepository.getResponse(it, pageSize)
     }
     val list = Transformations.switchMap(repoResult) { it.pagedList }
     val networkState = Transformations.switchMap(repoResult) { it.networkState }
@@ -35,12 +35,12 @@ class MainViewModel(
     }
 
     fun showChar(name: String): Boolean {
-        if (this.name.value == name)
+        if (this.ownerId.value == name)
             return false
-        this.name.value = name
+        this.ownerId.value = name
         return true
     }
 
-    fun currentCharName(): String? = name.value // for onSaveInstanceState
+    fun currentCharName(): String? = ownerId.value // for onSaveInstanceState
 
 }

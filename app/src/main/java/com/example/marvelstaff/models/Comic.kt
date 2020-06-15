@@ -14,6 +14,8 @@ data class Comic(
     val seriesURI: String? = null,
     val thumbnail: String? = null
 ) {
+    var ownerId: Int? = null
+
     override fun toString(): String {
         return "\nComic(" +
                 "id=$id, " +

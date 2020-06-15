@@ -9,18 +9,17 @@ import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.marvelstaff.MainViewModel
 import com.example.marvelstaff.R
 import com.example.marvelstaff.ui.PairTextView
 import com.example.marvelstaff.util.Logger
 import com.example.marvelstaff.util.addSizeMedium
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.details_fragment.*
-import org.koin.androidx.viewmodel.ext.android.sharedViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class CharDetailsFragment : Fragment() {
 
-    private val viewModel: MainViewModel by sharedViewModel()
+    private val viewModel: ComicViewModel by viewModel()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -29,6 +28,10 @@ class CharDetailsFragment : Fragment() {
     ): View? {
         Logger.log("CharDetailsFragment", "onCreateView")
         return inflater.inflate(R.layout.details_fragment, container, false)
+    }
+
+    private val adapter: ComicPagedAdapter by lazy {
+        ComicPagedAdapter()
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -48,23 +51,11 @@ class CharDetailsFragment : Fragment() {
         fields_list.addPair(R.string.events, char.eventsCount)
 
         recycler_container.layoutManager = LinearLayoutManager(this.context)
-        recycler_container.adapter = ComicListAdapter()
+        recycler_container.adapter = adapter
 
-        viewModel.comicsList.observe(viewLifecycleOwner, Observer {
-            Logger.log("CharDetailsFragment", "comicsList observe ${it.size}")
-            (recycler_container.adapter as ComicListAdapter).apply {
-                listComic = it
-                notifyDataSetChanged()
-            }
-        })
-        if (char.id != null && char.comicsCount != 0)
-            viewModel.requestComics(char.id)
-        else
-            viewModel.clearComics()
-        viewModel.errorState.observe(viewLifecycleOwner, Observer {
-            Logger.log("CharListFragment", "errorState: $it")
-            text_error_state.visibility = if (it) View.VISIBLE else View.GONE
-            recycler_container.visibility = if (!it) View.VISIBLE else View.GONE
+        char.id?.toString()?.let { viewModel.showChar(it) }
+        viewModel.list.observe(viewLifecycleOwner, Observer {
+            adapter.submitList(it)
         })
     }
 

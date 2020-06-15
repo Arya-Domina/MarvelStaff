@@ -6,6 +6,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.example.marvelstaff.models.Character
+import com.example.marvelstaff.models.Comic
 import io.reactivex.Completable
 
 @Dao
@@ -15,5 +16,12 @@ interface CharDao {
     fun getCharacters(query: String): DataSource.Factory<Int, Character>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(vararg characters: Character): Completable
+    fun insertCharacters(vararg characters: Character): Completable
+
+    @Query("SELECT * FROM Comic WHERE Comic.ownerId LIKE :query")
+    fun getComic(query: Int): DataSource.Factory<Int, Comic>
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertComics(vararg comics: Comic): Completable
+
 }
