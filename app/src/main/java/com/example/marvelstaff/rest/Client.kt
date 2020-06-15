@@ -7,24 +7,13 @@ import com.example.marvelstaff.models.ComicsListDeserializer
 import com.example.marvelstaff.util.Constants.Companion.BASE_URL
 import com.example.marvelstaff.util.Logger
 import com.google.gson.GsonBuilder
-import okhttp3.OkHttpClient
-import org.koin.core.KoinComponent
-import org.koin.core.inject
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 
-class Client : KoinComponent {
-    private val interceptors: Interceptors by inject()
-
+class Client {
     private val apiService: ApiService by lazy {
         return@lazy createApiService()
-    }
-    private val okHttpClient: OkHttpClient by lazy {
-        OkHttpClient.Builder()
-            .cache(interceptors.cache)
-            .addInterceptor(interceptors.interceptor)
-            .build()
     }
 
     private fun createApiService(): ApiService {
@@ -40,7 +29,6 @@ class Client : KoinComponent {
                     ).create()
                 )
             )
-            .client(okHttpClient)
             .build()
             .create(ApiService::class.java)
     }

@@ -1,73 +1,54 @@
 package com.example.marvelstaff
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
-import androidx.paging.LivePagedListBuilder
-import androidx.paging.PagedList
-import com.example.marvelstaff.models.Character
-import com.example.marvelstaff.models.CharactersList
 import com.example.marvelstaff.models.ComicsList
-import com.example.marvelstaff.models.State
+import com.example.marvelstaff.repository.CharRepository
 import com.example.marvelstaff.repository.CharacterRepository
-import com.example.marvelstaff.ui.main.CharDataSource
-import com.example.marvelstaff.ui.main.CharDataSourceFactory
 import com.example.marvelstaff.util.Logger
 import io.reactivex.disposables.CompositeDisposable
 
 class MainViewModel(
-    private val repository: CharacterRepository
+    private val repository: CharacterRepository,
+    private val charRepository: CharRepository
 ) : ViewModel() {
 
-    val charactersList = MutableLiveData<CharactersList>(CharactersList())
     val comicsList = MutableLiveData<ComicsList>(ComicsList())
     val errorState = MutableLiveData<Boolean>(false)
     private val compositeDisposable: CompositeDisposable by lazy { CompositeDisposable() }
 
-    private val pageSize = 5
-    private val charDataSourceFactory = CharDataSourceFactory()
-    val charList: LiveData<PagedList<Character>> by lazy {
-        val config = PagedList.Config.Builder()
-            .setPageSize(pageSize)
-            .setInitialLoadSizeHint(pageSize * 2)
-            .setEnablePlaceholders(false)
-            .build()
-        LivePagedListBuilder<Int, Character>(charDataSourceFactory, config).build()
-    }
+    private val pageSize = 10
 
-    fun getState(): LiveData<State> =
-        Transformations.switchMap<CharDataSource, State>(
-            charDataSourceFactory.charDataSourceLiveData, CharDataSource::state
-        )
-
-    fun listIsEmpty(): Boolean {
-        return charList.value?.isEmpty() ?: true
+    val name = MutableLiveData<String>()
+    val repoResult = Transformations.map(name) {
+        charRepository.getCharacters(it, pageSize)
     }
-
-    fun fetch(query: String) {
-        if (charDataSourceFactory.query != query) {
-            charDataSourceFactory.updateQuery(query)
-        }
-    }
+    val list = Transformations.switchMap(repoResult) { it.pagedList }
+    val networkState = Transformations.switchMap(repoResult) { it.networkState }
+    val refreshState = Transformations.switchMap(repoResult) { it.refreshState }
 
     override fun onCleared() {
         compositeDisposable.dispose()
         super.onCleared()
     }
 
-    fun requestCharacters(name: String) {
-        val disposable = repository.getCharacters(name)
-            .subscribe({
-                Logger.log("MainViewModel", "list success, $it")
-                errorState.value = false
-                charactersList.value = it
-            }, {
-                Logger.log("MainViewModel", "list err", it)
-                errorState.value = true
-            })
-        compositeDisposable.addAll(disposable)
+    fun refresh() {
+        repoResult.value?.refresh?.invoke()
     }
+
+    fun retry() {
+        repoResult.value?.retry?.invoke()
+    }
+
+    fun showChar(name: String): Boolean {
+        if (this.name.value == name)
+            return false
+        this.name.value = name
+        return true
+    }
+
+    fun currentCharName(): String? = name.value // for onSaveInstanceState
 
     fun requestComics(characterId: Int) {
         val disposable = repository.getComics(characterId)

@@ -26,8 +26,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.main_activity)
 
-        viewModel.getState().observe(this, Observer { state ->
-            Logger.log("MainActivity", "State observe: it: $state")
+        viewModel.networkState.observe(this, Observer { state ->
+            Logger.log("MainActivity", "networkState: $state")
             progress_bar.visibility = if (state == State.LOADING) View.VISIBLE else View.INVISIBLE
             text_error_state.visibility = if (state == State.ERROR) View.VISIBLE else View.INVISIBLE
         })
@@ -43,7 +43,7 @@ class MainActivity : AppCompatActivity() {
             )
                 .saveRecentQuery(query, null)
             Logger.log("MainActivity", "onNewIntent, query: $query")
-            viewModel.fetch(query)
+            viewModel.showChar(query)
             Navigation.findNavController(this, R.id.nav_host_fragment).let {
                 if (it.currentDestination?.id != R.id.charListFragment) {
                     Logger.log("MainActivity", "no charListFragment")

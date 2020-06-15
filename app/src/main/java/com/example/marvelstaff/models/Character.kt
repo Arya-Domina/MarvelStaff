@@ -2,9 +2,12 @@ package com.example.marvelstaff.models
 
 import android.os.Parcel
 import android.os.Parcelable
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 
+@Entity
 data class Character(
-    val id: Int? = null,
+    @PrimaryKey val id: Int? = null,
     val name: String? = null,
     val description: String? = null,
     val comicsCount: Int? = null,

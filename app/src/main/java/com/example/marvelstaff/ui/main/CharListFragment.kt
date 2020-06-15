@@ -36,7 +36,8 @@ class CharListFragment : Fragment() {
         recycler_container.layoutManager = LinearLayoutManager(this.context)
         recycler_container.adapter = adapter
 
-        viewModel.charList.observe(viewLifecycleOwner, Observer {
+        adapter.submitList(null)
+        viewModel.list.observe(viewLifecycleOwner, Observer {
             adapter.submitList(it)
         })
     }

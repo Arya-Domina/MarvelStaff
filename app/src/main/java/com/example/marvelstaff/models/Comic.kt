@@ -1,7 +1,11 @@
 package com.example.marvelstaff.models
 
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+
+@Entity
 data class Comic(
-    val id: Int? = null,
+    @PrimaryKey val id: Int? = null,
     val title: String? = null,
     val description: String? = null,
     val format: String? = null,
