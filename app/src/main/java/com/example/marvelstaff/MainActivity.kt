@@ -13,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.navigation.Navigation
 import com.example.marvelstaff.models.State
+import com.example.marvelstaff.ui.main.MainViewModel
 import com.example.marvelstaff.util.Logger
 import kotlinx.android.synthetic.main.main_activity.*
 import kotlinx.android.synthetic.main.main_fragment.*
@@ -43,7 +44,7 @@ class MainActivity : AppCompatActivity() {
             )
                 .saveRecentQuery(query, null)
             Logger.log("MainActivity", "onNewIntent, query: $query")
-            viewModel.showChar(query)
+            viewModel.request(query)
             Navigation.findNavController(this, R.id.nav_host_fragment).let {
                 if (it.currentDestination?.id != R.id.charListFragment) {
                     Logger.log("MainActivity", "no charListFragment")

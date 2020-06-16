@@ -1,27 +1,20 @@
 package com.example.marvelstaff.ui.main
 
 import android.view.ViewGroup
-import androidx.paging.PagedListAdapter
-import androidx.recyclerview.widget.DiffUtil
 import com.example.marvelstaff.models.Character
+import com.example.marvelstaff.ui.BasePagedAdapter
 
-class CharPagedAdapter : PagedListAdapter<Character, CharListHolder>(diffCallback) {
-
-    companion object {
-        private val diffCallback = object : DiffUtil.ItemCallback<Character>() {
-            override fun areItemsTheSame(oldItem: Character, newItem: Character): Boolean =
-                oldItem.id == newItem.id
-
-            override fun areContentsTheSame(oldItem: Character, newItem: Character): Boolean =
-                oldItem == newItem
-        }
-    }
+class CharPagedAdapter(private val listener: (Character) -> Unit) :
+    BasePagedAdapter<Character, CharListHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CharListHolder {
         return CharListHolder(parent)
     }
 
     override fun onBindViewHolder(holder: CharListHolder, position: Int) {
-        getItem(position)?.let { holder.bind(it) }
+        getItem(position)?.let {
+            holder.bind(it)
+            holder.bindNavigate(it, listener)
+        }
     }
 }

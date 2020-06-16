@@ -1,9 +1,7 @@
 package com.example.marvelstaff.rest
 
 import com.example.marvelstaff.models.CharactersList
-import com.example.marvelstaff.models.CharactersListDeserializer
 import com.example.marvelstaff.models.ComicsList
-import com.example.marvelstaff.models.ComicsListDeserializer
 import com.example.marvelstaff.util.Constants.Companion.BASE_URL
 import com.example.marvelstaff.util.Logger
 import com.google.gson.GsonBuilder
