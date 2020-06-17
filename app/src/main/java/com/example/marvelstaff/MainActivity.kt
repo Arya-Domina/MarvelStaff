@@ -7,16 +7,11 @@ import android.os.Bundle
 import android.provider.SearchRecentSuggestions
 import android.view.Menu
 import android.view.SearchEvent
-import android.view.View
 import android.widget.SearchView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.Observer
 import androidx.navigation.Navigation
-import com.example.marvelstaff.models.State
 import com.example.marvelstaff.ui.main.MainViewModel
 import com.example.marvelstaff.util.Logger
-import kotlinx.android.synthetic.main.main_activity.*
-import kotlinx.android.synthetic.main.main_fragment.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : AppCompatActivity() {
@@ -26,12 +21,6 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.main_activity)
-
-        viewModel.networkState.observe(this, Observer { state ->
-            Logger.log("MainActivity", "networkState: $state")
-            progress_bar.visibility = if (state == State.LOADING) View.VISIBLE else View.INVISIBLE
-            text_error_state.visibility = if (state == State.ERROR) View.VISIBLE else View.INVISIBLE
-        })
     }
 
     override fun onNewIntent(intent: Intent?) {

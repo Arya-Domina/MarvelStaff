@@ -4,10 +4,10 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import com.example.marvelstaff.models.BaseResponse
-import com.example.marvelstaff.repository.Repo
+import com.example.marvelstaff.repository.BaseRepository
 
 abstract class BaseViewModel<T : BaseResponse>(
-    private val repository: Repo<T>,
+    private val repository: BaseRepository<T>,
     private val pageSize: Int = 10
 ) : ViewModel() {
 

@@ -1,26 +1,18 @@
 package com.example.marvelstaff.repository
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.paging.LivePagedListBuilder
-import com.example.marvelstaff.database.CharDao
+import com.example.marvelstaff.models.BaseResponseList
 import com.example.marvelstaff.models.Character
-import com.example.marvelstaff.models.CharactersList
-import com.example.marvelstaff.models.State
-import com.example.marvelstaff.rest.ApiService
 import io.reactivex.Completable
 import io.reactivex.Single
-import org.koin.core.KoinComponent
-import org.koin.core.inject
 
-class CharRepository : Repo<Character>, KoinComponent {
-    private val apiService: ApiService by inject()
-    private val database: CharDao by inject()
+class CharRepository : BaseRepository<Character>() {
 
     override fun getResponse(query: String, pageSize: Int): Listing<Character> {
-        val boundaryCallback = CharBoundaryCallback<CharactersList, Character>(
-            query, this::loadList, this::insertIntoDb, pageSize
+        val boundaryCallback = PageBoundaryCallback<Character>(
+            query, this::load, pageSize
         )
         val refreshTrigger = MutableLiveData<Unit>()
         val refreshState = Transformations.switchMap(refreshTrigger) {
@@ -28,33 +20,24 @@ class CharRepository : Repo<Character>, KoinComponent {
         }
         val livePagedList = LivePagedListBuilder<Int, Character>(
             database.getCharacters(query),
-            pageSize
-        ) // config instead pageSize
+            configurePagedList(pageSize)
+        )
             .setBoundaryCallback(boundaryCallback)
             .build()
-        return Listing(livePagedList, boundaryCallback.networkState, refreshState,
+        return Listing(livePagedList, boundaryCallback.networkState,
+            refreshState,
             refresh = { refreshTrigger.value = null },
             retry = { boundaryCallback.helper.retryAllFailed() })
     }
 
-    private fun loadList(name: String, offset: Int, limit: Int): Single<CharactersList> {
+    override fun loadList(
+        name: String, offset: Int, limit: Int
+    ): Single<BaseResponseList<Character>> {
         return apiService.getCharacters(name, offset, limit)
+            .map { it }
     }
 
-    private fun insertIntoDb(body: CharactersList): Completable {
+    override fun insertIntoDb(body: BaseResponseList<Character>): Completable {
         return database.insertCharacters(*body.list.toTypedArray())
     }
-
-    private fun refresh(name: String): LiveData<State> {
-        val networkState = MutableLiveData<State>()
-        networkState.value = State.LOADING
-        apiService.getCharacters(name, 0, 10).subscribe({
-            insertIntoDb(it)
-            networkState.value = State.DONE
-        }, {
-            networkState.value = State.ERROR
-        })
-        return networkState
-    }
-
 }

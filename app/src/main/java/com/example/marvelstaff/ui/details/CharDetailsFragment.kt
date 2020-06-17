@@ -2,6 +2,7 @@ package com.example.marvelstaff.ui.details
 
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
+import com.example.marvelstaff.BaseViewModel
 import com.example.marvelstaff.R
 import com.example.marvelstaff.models.Comic
 import com.example.marvelstaff.ui.BaseFragment
@@ -20,6 +21,8 @@ class CharDetailsFragment : BaseFragment<Comic, ComicListHolder>(R.layout.detail
     }
 
     override fun getRecycler(): RecyclerView = recycler_container
+
+    override fun getViewModel(): BaseViewModel<Comic> = viewModel
 
     override fun bind() {
         val char = CharDetailsFragmentArgs.fromBundle(requireArguments()).char
