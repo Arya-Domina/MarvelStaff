@@ -11,9 +11,7 @@ import io.reactivex.Single
 class ComicRepository : BaseRepository<Comic>() {
 
     override fun getResponse(query: String, pageSize: Int): Listing<Comic> {
-        val boundaryCallback = PageBoundaryCallback<Comic>(
-            query, this::load, pageSize
-        )
+        boundaryCallback = getBoundaryCallback(query, pageSize)
         val refreshTrigger = MutableLiveData<Unit>()
         val refreshState = Transformations.switchMap(refreshTrigger) {
             refresh(query)
@@ -24,8 +22,7 @@ class ComicRepository : BaseRepository<Comic>() {
         )
             .setBoundaryCallback(boundaryCallback)
             .build()
-        return Listing(livePagedList, boundaryCallback.networkState,
-            refreshState,
+        return Listing(livePagedList, boundaryCallback.networkState, refreshState,
             refresh = { refreshTrigger.value = null },
             retry = { boundaryCallback.helper.retryAllFailed() })
     }

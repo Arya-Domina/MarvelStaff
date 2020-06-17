@@ -11,7 +11,7 @@ abstract class BaseViewModel<T : BaseResponse>(
     private val pageSize: Int = 10
 ) : ViewModel() {
 
-    val query = MutableLiveData<String>()
+    private val query = MutableLiveData<String>()
     private val result = Transformations.map(query) {
         repository.getResponse(it, pageSize)
     }
@@ -20,6 +20,10 @@ abstract class BaseViewModel<T : BaseResponse>(
     }
     val networkState = Transformations.switchMap(result) { it.networkState }
     val refreshState = Transformations.switchMap(result) { it.refreshState }
+
+    override fun onCleared() {
+        repository.clear()
+    }
 
     fun request(query: String): Boolean {
         if (this.query.value == query)

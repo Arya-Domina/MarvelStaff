@@ -18,7 +18,6 @@ class PageBoundaryCallback<E : BaseResponse>(
 
     val helper = PagingRequestHelper(Executors.newSingleThreadExecutor())
     val networkState = helper.createStatusLiveData()
-
     private val compositeDisposable: CompositeDisposable = CompositeDisposable()
     private var offsetCount = 0
 
@@ -53,9 +52,7 @@ class PageBoundaryCallback<E : BaseResponse>(
             })
     }
 
-
-    fun cleared() {
+    fun clear() {
         compositeDisposable.clear()
     }
-
 }
