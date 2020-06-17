@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="4dp"
+    app:cardBackgroundColor="@color/card_background"
+    app:cardCornerRadius="12dp"
+    app:cardElevation="3dp"
+    app:contentPadding="6dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/thumbnail"
+            android:layout_width="@dimen/small_image_size"
+            android:layout_height="@dimen/small_image_size"
+            android:layout_gravity="center"
+            android:layout_margin="8dp"
+            android:src="@drawable/ic_placeholder"
+            android:background="@color/icon_background" />
+
+        <LinearLayout
+            android:id="@+id/fields_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <com.example.marvelstaff.ui.PairTextView
+                android:id="@+id/pair_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:denotation="@string/char_name" />
+
+            <com.example.marvelstaff.ui.PairTextView
+                android:id="@+id/pair_des"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:denotation="@string/description" />
+        </LinearLayout>
+    </LinearLayout>
+</androidx.cardview.widget.CardView>

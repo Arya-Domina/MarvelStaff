@@ -1,3 +1,24 @@
 <resources>
     <string name="app_name">Marvel Staff</string>
+
+    <string name="denotation">Denotation</string>
+    <string name="value_text">Value</string>
+    <string name="char_name">Name</string>
+    <string name="description">Description</string>
+    <string name="comics">Comics</string>
+    <string name="series">Series</string>
+    <string name="stories">Stories</string>
+    <string name="events">Events</string>
+    <string name="comic_title">Title</string>
+    <string name="format">Format</string>
+    <string name="pages">Pages</string>
+    <string name="series_name">Series</string>
+
+    <string name="search_menu">Search</string>
+    <string name="search_hint">Search characters</string>
+    <string name="error">No connection</string>
+    <string name="retry">RETRY</string>
+
+    <string name="marvel_link">http://marvel.com</string>
+    <string name="marvel_attribute">Data provided by Marvel. © 2020 Marvel</string>
 </resources>
