@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.marvelstaff">
 
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
@@ -32,7 +33,8 @@
                 android:resource="@xml/searchable" />
         </activity>
 
-        <provider android:name=".CharacterSuggestionProvider"
+        <provider
+            android:name=".CharacterSuggestionProvider"
             android:authorities="com.example.marvelstaff.CharacterSuggestionProvider" />
     </application>
 

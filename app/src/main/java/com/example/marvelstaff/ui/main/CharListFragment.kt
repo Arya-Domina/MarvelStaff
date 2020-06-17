@@ -1,48 +1,37 @@
 package com.example.marvelstaff.ui.main
 
-import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.marvelstaff.MainViewModel
+import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.RecyclerView
+import com.example.marvelstaff.BaseViewModel
 import com.example.marvelstaff.R
-import com.example.marvelstaff.util.Logger
+import com.example.marvelstaff.models.Character
+import com.example.marvelstaff.ui.BaseFragment
+import com.example.marvelstaff.ui.BasePagedAdapter
 import kotlinx.android.synthetic.main.main_fragment.*
-import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
-class CharListFragment : Fragment() {
+class CharListFragment : BaseFragment<Character, CharListHolder>(R.layout.main_fragment) {
 
-    private val viewModel: MainViewModel by viewModel()
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        Logger.log("CharListFragment", "onCreateView")
-        return inflater.inflate(R.layout.main_fragment, container, false)
+    private val viewModel: MainViewModel by sharedViewModel()
+    override val adapter: BasePagedAdapter<Character, CharListHolder> by lazy {
+        CharPagedAdapter(this::navigateToCharacter)
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        Logger.log("CharListFragment", "onActivityCreated")
+    override fun getRecycler(): RecyclerView = recycler_container
 
-        recycler_container.layoutManager = LinearLayoutManager(this.context)
-        recycler_container.adapter = CharListAdapter()
+    override fun getViewModel(): BaseViewModel<Character> = viewModel
 
-        viewModel.charactersList.observe(viewLifecycleOwner, Observer {
-            Logger.log("CharListFragment", "charactersList observe ${it.list.size}")
-            (recycler_container.adapter as CharListAdapter).listChar = it
-            (recycler_container.adapter as CharListAdapter).notifyDataSetChanged()
+    override fun bind() {
+        adapter.submitList(null)
+        viewModel.list.observe(viewLifecycleOwner, Observer {
+            adapter.submitList(it)
         })
+    }
 
-        val q = CharListFragmentArgs.fromBundle(requireArguments()).query
-        Logger.log("CharListFragment", "onActivityCreated args: $q")
-        if (q != "null") {
-            viewModel.requestCharacters(q)
-        }
+    private fun navigateToCharacter(char: Character) {
+        val action = CharListFragmentDirections.actionCharListFragmentToCharDetailsFragment(char)
+        findNavController().navigate(action)
     }
 
 }

@@ -1,4 +1,4 @@
-package com.example.marvelstaff.models
+package com.example.marvelstaff.rest
 
 import com.google.gson.JsonElement
 import com.google.gson.JsonObject

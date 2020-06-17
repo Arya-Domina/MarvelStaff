@@ -1,5 +1,8 @@
 package com.example.marvelstaff.util
 
+import androidx.recyclerview.widget.DiffUtil
+import com.example.marvelstaff.models.BaseResponse
+
 class Constants {
     companion object {
         // network request
@@ -10,5 +13,13 @@ class Constants {
 
         const val SIZE_MEDIUM = "/standard_medium"
         const val SIZE_SMALL = "/standard_small"
+
+        fun <T : BaseResponse> diffCallback() = object : DiffUtil.ItemCallback<T>() {
+            override fun areItemsTheSame(oldItem: T, newItem: T): Boolean =
+                oldItem.id == newItem.id
+
+            override fun areContentsTheSame(oldItem: T, newItem: T): Boolean =
+                oldItem == newItem
+        }
     }
 }

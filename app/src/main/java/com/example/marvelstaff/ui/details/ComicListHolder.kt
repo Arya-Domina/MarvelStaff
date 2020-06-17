@@ -1,43 +1,26 @@
 package com.example.marvelstaff.ui.details
 
-import android.view.View
-import android.widget.LinearLayout
-import androidx.annotation.StringRes
-import androidx.recyclerview.widget.RecyclerView
+import android.view.ViewGroup
 import com.example.marvelstaff.R
 import com.example.marvelstaff.models.Comic
-import com.example.marvelstaff.ui.PairTextView
+import com.example.marvelstaff.ui.BaseListHolder
+import com.example.marvelstaff.util.addPair
 import com.example.marvelstaff.util.addSizeSmall
-import com.squareup.picasso.Picasso
+import com.example.marvelstaff.util.loadThumbnail
 import kotlinx.android.synthetic.main.comic_view.view.*
 
-class ComicListHolder(private val itemComicView: View) : RecyclerView.ViewHolder(itemComicView) {
+class ComicListHolder(parent: ViewGroup) :
+    BaseListHolder<Comic>(parent, R.layout.comic_view) {
 
-    fun bind(comic: Comic) {
-        Picasso.get().load(comic.thumbnail?.addSizeSmall()).fit()
-            .placeholder(R.drawable.ic_placeholder).error(R.drawable.ic_error)
-            .into(itemComicView.thumbnail)
+    override fun bind(item: Comic) {
+        itemView.thumbnail.loadThumbnail(item.thumbnail?.addSizeSmall())
 
-        itemComicView.fields_list.pair_name.value = comic.title ?: "no name"
-        itemComicView.fields_list.pair_des.value = comic.description?.take(40)?.plus("...")
+        itemView.fields_list.pair_name.value = item.name ?: "no name"
+        itemView.fields_list.pair_des.value = item.description?.take(40)?.plus("...")
 
-        itemComicView.second_field_list.removeAllViews()
-        itemComicView.second_field_list.addPair(R.string.format, comic.format)
-        itemComicView.second_field_list.addPair(R.string.pages, comic.pageCount)
-        itemComicView.second_field_list.addPair(R.string.series_name, comic.seriesName)
-    }
-
-    private fun LinearLayout.addPair(@StringRes denotationRes: Int, value: String?) {
-        value?.let {
-            this.addView(
-                PairTextView(itemComicView.context, denotationRes, value)
-            )
-        }
-    }
-
-    private fun LinearLayout.addPair(@StringRes denotationRes: Int, value: Int?) {
-        if (value != null && value != 0) {
-            this.addPair(denotationRes, value.toString())
-        }
+        itemView.second_field_list.removeAllViews()
+        itemView.second_field_list.addPair(R.string.format, item.format)
+        itemView.second_field_list.addPair(R.string.pages, item.pageCount)
+        itemView.second_field_list.addPair(R.string.series_name, item.seriesName)
     }
 }

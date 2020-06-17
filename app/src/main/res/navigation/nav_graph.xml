@@ -13,7 +13,7 @@
     <fragment
         android:id="@+id/charListFragment"
         android:name="com.example.marvelstaff.ui.main.CharListFragment"
-        android:label="main_fragment"
+        android:label="CharListFragment"
         tools:layout="@layout/main_fragment">
         <action
             android:id="@+id/action_charListFragment_to_charDetailsFragment"

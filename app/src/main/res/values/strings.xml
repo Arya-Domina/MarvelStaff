@@ -16,6 +16,9 @@
 
     <string name="search_menu">Search</string>
     <string name="search_hint">Search characters</string>
+    <string name="error">No connection</string>
+    <string name="retry">RETRY</string>
+
     <string name="marvel_link">http://marvel.com</string>
     <string name="marvel_attribute">Data provided by Marvel. © 2020 Marvel</string>
 </resources>
