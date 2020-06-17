@@ -25,19 +25,22 @@ class CharDetailsFragment : BaseFragment<Comic, ComicListHolder>(R.layout.detail
     override fun getViewModel(): BaseViewModel<Comic> = viewModel
 
     override fun bind() {
-        val char = CharDetailsFragmentArgs.fromBundle(requireArguments()).char
+        arguments?.let { arguments ->
+            val char = CharDetailsFragmentArgs.fromBundle(arguments).char
 
-        thumbnail.loadThumbnail(char.thumbnail?.addSizeMedium())
-        fields_list.addPair(R.string.char_name, char.name)
-        fields_list.addPair(R.string.description, char.description)
-        fields_list.addPair(R.string.comics, char.comicsCount)
-        fields_list.addPair(R.string.series, char.seriesCount)
-        fields_list.addPair(R.string.stories, char.storiesCount)
-        fields_list.addPair(R.string.events, char.eventsCount)
+            thumbnail.loadThumbnail(char.thumbnail?.addSizeMedium())
+            fields_list.addPair(R.string.char_name, char.name)
+            fields_list.addPair(R.string.description, char.description)
+            fields_list.addPair(R.string.comics, char.comicsCount)
+            fields_list.addPair(R.string.series, char.seriesCount)
+            fields_list.addPair(R.string.stories, char.storiesCount)
+            fields_list.addPair(R.string.events, char.eventsCount)
 
-        char.id?.toString()?.let { viewModel.request(it) }
+            char.id?.toString()?.let { viewModel.request(it) }
+        }
         viewModel.list.observe(viewLifecycleOwner, Observer {
             adapter.submitList(it)
         })
     }
+
 }

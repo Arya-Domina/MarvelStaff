@@ -3,6 +3,7 @@ package com.example.marvelstaff
 import android.app.SearchManager
 import android.content.Context
 import android.content.Intent
+import android.database.Cursor
 import android.os.Bundle
 import android.provider.SearchRecentSuggestions
 import android.view.Menu
@@ -17,6 +18,10 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 class MainActivity : AppCompatActivity() {
 
     private val viewModel: MainViewModel by viewModel()
+
+    companion object {
+        private var queryText: String? = null
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,6 +55,27 @@ class MainActivity : AppCompatActivity() {
 
         val searchManager = getSystemService(Context.SEARCH_SERVICE) as SearchManager
         (menu?.findItem(R.id.menu_search)?.actionView as SearchView).apply {
+            setQuery(queryText, false)
+            setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+                override fun onQueryTextSubmit(p0: String?): Boolean = false
+
+                override fun onQueryTextChange(p0: String?): Boolean {
+                    queryText = p0
+                    return false
+                }
+
+            })
+            setOnSuggestionListener(object : SearchView.OnSuggestionListener {
+                override fun onSuggestionSelect(position: Int): Boolean = false
+
+                override fun onSuggestionClick(position: Int): Boolean {
+                    val cursor: Cursor = suggestionsAdapter.getItem(position) as Cursor
+                    val str: String =
+                        cursor.getString(cursor.getColumnIndex(SearchManager.SUGGEST_COLUMN_TEXT_1))
+                    setQuery(str, true)
+                    return true
+                }
+            })
             setSearchableInfo(searchManager.getSearchableInfo(componentName))
             setIconifiedByDefault(false)
             isFocusable = true

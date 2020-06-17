@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.example.marvelstaff.BaseViewModel
 import com.example.marvelstaff.models.BaseResponse
 import com.example.marvelstaff.models.State
@@ -31,21 +32,32 @@ abstract class BaseFragment<T : BaseResponse, H : BaseListHolder<T>>(@LayoutRes 
             it.adapter = adapter
         }
         bind()
+        activity?.error_view?.bindErrorView()
+        activity?.swipe_refresh?.bindSwipeRefresh()
+    }
 
-        activity?.error_view?.setOnRetry {
-            Logger.log("BaseFragment", "error_view test retry")
+    private fun ErrorView.bindErrorView() {
+        visibility = View.GONE
+        setOnRetry {
+            Logger.log("BaseFragment", "error_view retry")
             getViewModel().retry()
         }
         getViewModel().networkState.observe(viewLifecycleOwner, Observer { state ->
-            activity?.error_view?.visibility = if (state == State.ERROR) View.VISIBLE else View.GONE
+            visibility = if (state == State.ERROR) View.VISIBLE else View.GONE
         })
-        activity?.swipe_refresh?.isRefreshing = false
-        activity?.swipe_refresh?.setOnRefreshListener {
-            Logger.log("BaseFragment", "swipe_refresh test refresh")
-            getViewModel().refresh()
+    }
+
+    private fun SwipeRefreshLayout.bindSwipeRefresh() {
+        isRefreshing = false
+        setOnRefreshListener {
+            Logger.log("BaseFragment", "swipe_refresh refresh")
+            if (getViewModel().getCurrentQuery() == null)
+                isRefreshing = false
+            else
+                getViewModel().refresh()
         }
         getViewModel().refreshState.observe(viewLifecycleOwner, Observer { state ->
-            activity?.swipe_refresh?.isRefreshing = state == State.LOADING
+            isRefreshing = state == State.LOADING
         })
     }
 }
